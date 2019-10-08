@@ -1,0 +1,66 @@
+\documentclass{article}
+\usepackage{xparse}
+\ExplSyntaxOn
+\NewDocumentCommand{\conjugate}{ m O{#1ed} O{#2} }{(#1,#2,#3)}
+\NewDocumentCommand{\margins}{ O{#3} m O{#1} m }{(#1,#2,#3,#4)}
+\NewDocumentCommand \foo { o m }{
+    \IfNoValueTF{#1}
+    {\DoSomethingJustWithMandatoryArgument{#2}}
+    {\DoSomethingJustWithBothArguments{#1}{#2}}
+}
+\NewDocumentCommand\DoSomethingJustWithMandatoryArgument{m}{
+    \textit{#1}
+}
+\NewDocumentCommand\DoSomethingJustWithBothArguments{mm}{
+    \textbf{#1}:#2.
+}
+\NewDocumentCommand\fish{sm}{
+    \IfBooleanTF{#1}
+    {\DoSomethingWithStar{#2}}
+    {\DoSomethingWithoutStar{#2}}
+}
+\NewDocumentCommand{\DoSomethingWithStar}{m}{
+    #1,*.
+}
+\NewDocumentCommand{\DoSomethingWithoutStar}{m}{
+    #1.
+}
+\NewDocumentCommand{\foobrackets}{o}{#1}
+\NewDocumentCommand{\foobar}{o}{#1}
+\NewDocumentCommand{\foobaz}{o}{#1}
+\ExplSyntaxOff
+\begin{document}
+\conjugate{walk}
+
+\conjugate{find}[found]
+
+\conjugate{do}[did][done]
+
+\margins {a} {b}
+
+\margins [1cm] {a} {b}
+
+\margins {a}[1cm]{b}
+
+\margins[1cm]{a}[2cm]{b}
+
+\foo[hehe]{nice}
+
+\foo{hi}
+
+\fish*{hello fish star}
+
+\fish{ hi fish }
+
+\foobrackets[[content]]
+
+\foobrackets[haha]
+
+\foobrackets[[[hello]]]
+
+\foobar[{[}]
+
+\foobaz[{abc}]
+
+\foobaz[ {abc}]
+\end{document}
